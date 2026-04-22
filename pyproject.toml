@@ -1,0 +1,25 @@
+[project]
+name = "transit"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "psycopg[binary]",
+    "pandas",
+    "prefect",
+    "alembic",
+    "sqlalchemy",
+    "pydantic-settings",
+    "python-dotenv",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "testcontainers",
+    "ruff",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
