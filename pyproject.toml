@@ -22,4 +22,25 @@ dev = [
 ]
 
 [tool.ruff.lint]
-select = ["ALL"]
+extend-select = [
+    "F",        # Pyflakes: logical errors (undefined vars, unused imports)
+    "W",        # PyCodeStyle warnings
+    "E",        # PyCodeStyle errors (PEP 8 compliance)
+    "I",        # isort: consistent import ordering
+    "UP",       # pyupgrade: modernize syntax for newer Python versions
+    "C4",       # flake8-comprehensions: better list/dict/set comprehensions
+    "FA",       # enforce from __future__ import annotations
+    "ISC",      # implicit string concatenation
+    "ICN",      # common import conventions (e.g., numpy as np)
+    "RET",      # good return practices
+    "SIM",      # flake8-simplify: cleaner boolean logic
+    "TID",      # tidy imports
+    "TC",       # move type-only imports to TYPE_CHECKING blocks
+    "PTH",      # use pathlib instead of os.path
+    "TD",       # TODO comment conventions
+    "NPY",      # NumPy-specific rules
+    "FURB"      # Refurb: idiomatic Python patterns
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

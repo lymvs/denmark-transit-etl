@@ -1,3 +1,46 @@
+# Temp files
 temp.txt
 temp/*
+system_overview.drawio
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables
 .env
+.env.*
+!.env.example      # keep the example template
+
+# Extracted GTFS files and downloads
+temp/
+*.zip
+*.txt.bak
+
+# Pytest
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Alembic
+# don't ignore versions/ — migrations should be committed
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

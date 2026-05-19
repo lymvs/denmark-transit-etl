@@ -4,6 +4,11 @@
 
 An ETL pipeline for monitoring and analyzing public transit data from GTFS feeds.
 
+TODO:
+- fix number of columns passed on insert sql query
+- verify data ingestion
+- add tests
+
 ## Installation
 
 ## Contributing
