@@ -65,7 +65,7 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
 
                 logger.info("INFO Started to ingest data for table %s", table)
                 cols = get_table_column_names(cur, schema, table)
-                ingest_to_table(cur, schema, table, cols, hex_dig)
+                ingest_to_table(cur, schema, "temp/" + table + ".txt", cols, hex_dig)
                 conn.commit()
                 logger.info("INFO %d records added into table %s", cur.rowcount, table)
         except ProgrammingError:
