@@ -41,6 +41,7 @@ def get_table_column_names(
 
 
 def ingest_to_table(
+    data_file: str,
     cur: psycopg.Cursor,
     schema: str,
     table_name: str,
@@ -49,7 +50,7 @@ def ingest_to_table(
 ) -> None:
     """Ingest into table in chunks for stressing out memory."""
     chunk_iter = pd.read_csv(
-        "temp/" + table_name + ".txt",
+        data_file,
         chunksize=10000,
         )
 
