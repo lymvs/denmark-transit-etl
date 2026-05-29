@@ -29,14 +29,18 @@ def fetch_files(logger: logging.Logger, temp: str) -> str:
             zip_file.extractall(path=temp)
 
     except requests.exceptions.HTTPError as e:
-        logger.warning("WARNING HTTP error occured: %e", e)
+        logger.warning("HTTP error occured: %s", e)
+        raise
     except requests.exceptions.ConnectionError as e:
-        logger.warning("WARNING Connection error occured: %e", e)
+        logger.warning("Connection error occured: %s", e)
+        raise
     except requests.exceptions.Timeout as e:
-        logger.warning("WARNING Error occured: %s", e)
+        logger.warning("Error occured: %s", e)
+        raise
     except requests.exceptions.RequestException as e:
-        logger.warning("WARNING An unexcpected error occured: %s", e)
+        logger.warning("An unexcpected error occured: %s", e)
+        raise
     else:
-        logger.info("INFO Files extracted successfully")
-        logger.info("INFO Feed version %s", hex_dig)
+        logger.info("Files extracted successfully")
+        logger.info("Feed version %s", hex_dig)
         return hex_dig
