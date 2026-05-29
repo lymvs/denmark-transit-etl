@@ -1,11 +1,11 @@
 """ETL flow."""
 import os
-from sqlite3 import ProgrammingError
 
 import psycopg
 from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.logging import get_run_logger
+from psycopg import ProgrammingError
 
 from infra.gtfs.rejseplannen import fetch_files
 from pipelines.ingestion.ingest import (
@@ -58,19 +58,26 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
 
                 if cur.fetchone():
                     logger.warning(
-                        "WARNING Feed version %s already exists, skipping",
+                        "Feed version %s already exists, skipping",
                         hex_dig,
                         )
                     continue
 
-                logger.info("INFO Started to ingest data for table %s", table)
+                logger.info("Started to ingest data for table %s", table)
                 cols = get_table_column_names(cur, schema, table)
-                ingest_to_table(cur, schema, "temp/" + table + ".txt", cols, hex_dig)
+                ingest_to_table(
+                    "temp/" + table + ".txt",
+                    cur,
+                    schema,
+                    table,
+                    cols,
+                    hex_dig,
+                    )
                 conn.commit()
-                logger.info("INFO %d records added into table %s", cur.rowcount, table)
+                logger.info("%d records added into table %s", cur.rowcount, table)
         except ProgrammingError:
             conn.rollback()
-            logger.exception("ERROR Ingestion failed, transaction rolled back")
+            logger.exception("Ingestion failed, transaction rolled back")
 
 
 @flow(name="gtfs_etl", log_prints=True)

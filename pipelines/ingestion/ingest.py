@@ -66,7 +66,7 @@ def ingest_to_table(
         )
 
     # Metadata
-    ingested_at = datetime.now(tz=UTC).strftime("%Y-%m-%d")
+    ingested_at = datetime.now(tz=UTC).date()
 
     for chunk in itertools.chain([first_chunk], chunk_iter):
         data = [
