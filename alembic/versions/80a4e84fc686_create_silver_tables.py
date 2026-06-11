@@ -6,6 +6,7 @@ Create Date: 2026-06-05 20:55:52.895662
 
 """
 from collections.abc import Sequence
+from pathlib import Path
 
 import yaml
 
@@ -19,7 +20,7 @@ depends_on: str | Sequence[str] | None = None
 
 YAML_PATH = "config/silver_schema.yaml"
 
-with open(YAML_PATH) as f:
+with Path.open(YAML_PATH) as f:
     SILVER_SCHEMA = yaml.safe_load(f)
 
 

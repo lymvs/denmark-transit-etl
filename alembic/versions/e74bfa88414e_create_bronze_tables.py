@@ -6,6 +6,7 @@ Create Date: 2026-04-12 20:41:46.840329
 
 """
 from collections.abc import Sequence
+from pathlib import Path
 
 import sqlalchemy as sa
 import yaml
@@ -20,7 +21,7 @@ depends_on: str | Sequence[str] | None = None
 
 YAML_PATH = "config/bronze_schema.yaml"
 
-with open(YAML_PATH) as f:
+with Path.open(YAML_PATH) as f:
     BRONZE_SCHEMA = yaml.safe_load(f)
 
 
