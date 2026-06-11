@@ -1,0 +1,98 @@
+agency:
+  - agency_id: TEXT
+  - agency_name: TEXT
+  - agency_url: TEXT
+  - agency_timezone: TEXT
+  - agency_lang: TEXT
+  - agency_phone: TEXT
+
+attributions:
+  - attribution_id: TEXT
+  - is_producer: INTEGER
+  - organization_name: TEXT
+  - attribution_url: TEXT
+
+calendar_dates:
+  - service_id: TEXT
+  - date: DATE
+  - exception_type: INTEGER
+
+calendar:
+  - service_id: TEXT
+  - monday: BOOLEAN
+  - tuesday: BOOLEAN
+  - wednesday: BOOLEAN
+  - thursday: BOOLEAN
+  - friday: BOOLEAN
+  - saturday: BOOLEAN
+  - sunday: BOOLEAN
+  - start_date: DATE
+  - end_date: DATE
+
+frequencies:
+  - trip_id: TEXT
+  - start_time: DATE
+  - end_time: DATE
+  - headway_secs: TEXT
+  - exact_times: TEXT
+
+routes:
+  - route_id: TEXT
+  - agency_id: TEXT
+  - route_short_name: TEXT
+  - route_long_name: TEXT
+  - route_type: INTEGER
+  - route_color: TEXT
+  - route_text_color: TEXT
+  - route_desc: TEXT
+
+shapes:
+  - shape_id: TEXT
+  - shape_pt_lat: FLOAT
+  - shape_pt_lon: FLOAT
+  - shape_pt_sequence: INTEGER
+
+stop_times:
+  - trip_id: TEXT
+  - arrival_time: INTERVAL
+  - departure_time: INTERVAL
+  - stop_id: TEXT
+  - stop_sequence: INTEGER
+  - pickup_type: INTEGER
+  - drop_off_type: INTEGER
+  - stop_headsign: TEXT
+
+stops:
+  - stop_id: TEXT
+  - stop_code: TEXT
+  - stop_name: TEXT
+  - stop_desc: TEXT
+  - stop_lat: FLOAT
+  - stop_lon: FLOAT
+  - location_type: INTEGER
+  - parent_station: TEXT
+  - wheelchair_boarding: INTEGER
+  - platform_code: TEXT
+  - stop_timezone: TEXT
+
+transfers:
+  - from_stop_id: TEXT
+  - to_stop_id: TEXT
+  - transfer_type: INTEGER
+  - min_transfer_time: INTEGER
+  - from_route_id: TEXT
+  - to_route_id: TEXT
+  - from_trip_id: TEXT
+  - to_trip_id: TEXT
+
+trips:
+  - route_id: TEXT
+  - service_id: TEXT
+  - trip_id: TEXT
+  - trip_headsign: TEXT
+  - trip_short_name: TEXT
+  - direction_id: TEXT
+  - block_id: TEXT
+  - shape_id: TEXT
+  - wheelchair_accessible: INTEGER
+  - bikes_allowed: INTEGER

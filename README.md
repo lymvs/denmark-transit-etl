@@ -4,10 +4,14 @@
 
 An ETL pipeline for monitoring and analyzing public transit data from GTFS feeds.
 
-TODO:
-- fix number of columns passed on insert sql query
-- verify data ingestion
-- add tests
+## System Overview
+
+The ETL pipeline implementation follows the medallion architecture. 
+
+- GTFS data are being fetched in a zip file from Rejseplannen site via HTTP request
+- The zip file is extracted and stored temporarily in the landing zone 
+- Raw tables are being stored as bronze layer in a PostgreSQL database
+- 
 
 ## Installation
 
