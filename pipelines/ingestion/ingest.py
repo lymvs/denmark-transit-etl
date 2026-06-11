@@ -47,7 +47,7 @@ def ingest_to_table(
     table_name: str,
     table_cols: list[str],
     hex_dig: str,
-) -> None:
+) -> int:
     """Ingest into table in chunks for stressing out memory."""
     chunk_iter = pd.read_csv(
         data_file,
@@ -56,7 +56,7 @@ def ingest_to_table(
 
     first_chunk = next(chunk_iter)
     if first_chunk.empty:
-        return
+        return 0
 
     query = sql.SQL(
         "INSERT INTO {} ({}) VALUES ({});").format(
@@ -68,6 +68,7 @@ def ingest_to_table(
     # Metadata
     ingested_at = datetime.now(tz=UTC).date()
 
+    total_records = 0
     for chunk in itertools.chain([first_chunk], chunk_iter):
         data = [
             (
@@ -77,3 +78,6 @@ def ingest_to_table(
                 ) for x in chunk.to_numpy()
         ]
         cur.executemany(query, data)
+        total_records += cur.rowcount
+
+    return total_records

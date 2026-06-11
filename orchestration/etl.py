@@ -58,14 +58,14 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
 
                 if cur.fetchone():
                     logger.warning(
-                        "Feed version %s already exists, skipping",
-                        hex_dig,
+                        "Feed version for table %s already exists, skipping",
+                        table,
                         )
                     continue
 
                 logger.info("Started to ingest data for table %s", table)
                 cols = get_table_column_names(cur, schema, table)
-                ingest_to_table(
+                total_records = ingest_to_table(
                     "temp/" + table + ".txt",
                     cur,
                     schema,
@@ -74,7 +74,7 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
                     hex_dig,
                     )
                 conn.commit()
-                logger.info("%d records added into table %s", cur.rowcount, table)
+                logger.info("%d records added into table %s", total_records, table)
         except ProgrammingError:
             conn.rollback()
             logger.exception("Ingestion failed, transaction rolled back")
