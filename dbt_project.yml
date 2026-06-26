@@ -1,0 +1,25 @@
+name: 'gtfs_project'
+version: '1.0.0'
+config-version: 2
+
+profile: 'gtfs_project'
+
+model-paths: ['models']
+seed-paths: ['seeds']
+test-paths: ['tests']
+snapshot-paths: ['snapshots']
+analysis-paths: ['analyses']
+macro-paths: ['macros']
+
+clean-targets:
+  - 'target'
+  - 'dbt_packages'
+
+models:
+  gtfs_project:
+    silver:
+      +schema: silver
+      +materialized: table
+    gold:
+      +schema: gold
+      +materialized: table

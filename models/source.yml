@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    tables:
+      - name: agency
+      - name: attributions
+      - name: calendar_dates
+      - name: calendar
+      - name: frequencies
+      - name: routes
+      - name: shapes
+      - name: stops
+      - name: stop_times
+      - name: transfers
+      - name: trips

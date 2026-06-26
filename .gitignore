@@ -8,10 +8,11 @@ __pycache__/
 *.pyc
 *.pyo
 .Python
+__builtins__.pyi
 
 # Virtual environment
-.venv/
-venv/
+.venv*/
+venv*/
 env/
 
 # Environment variables
@@ -47,3 +48,8 @@ Thumbs.db
 
 # Images
 *.drawio.bkp
+
+# dbt
+target/
+dbt_packages/
+logs/

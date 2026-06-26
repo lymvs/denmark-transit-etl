@@ -1,0 +1,171 @@
+models:
+  - name: silver_agency
+    columns:
+      - name: agency_id
+        data_tests:
+          - unique
+          - not_null
+      - name: agency_name
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_attributions
+    columns:
+      - name: attribution_id
+        data_tests:
+          - unique
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_calendar_dates
+    columns:
+      - name: service_id
+        data_tests:
+          - not_null
+      - name: date
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_calendar
+    columns:
+      - name: service_id
+        data_tests:
+          - unique
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_routes
+    columns:
+      - name: route_id
+        data_tests:
+          - unique
+          - not_null
+      - name: agency_id
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_shapes
+    columns:
+      - name: shape_id
+        data_tests:
+          - not_null
+      - name: shape_pt_lat
+        data_tests:
+          - not_null
+      - name: shape_pt_lon
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_stop_times
+    columns:
+      - name: trip_id
+        data_tests:
+          - not_null
+      - name: arrival_time
+        data_tests:
+          - not_null
+      - name: departure_time
+        data_tests:
+          - not_null
+      - name: stop_id
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_stops
+    columns:
+      - name: stop_id
+        data_tests:
+          - unique
+          - not_null
+      - name: stop_name
+        data_tests:
+          - not_null
+      - name: stop_lat
+        data_tests:
+          - not_null
+      - name: stop_lon
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_transfers
+    columns:
+      - name: from_stop_id
+        data_tests:
+          - not_null
+      - name: to_stop_id
+        data_tests:
+          - not_null
+      - name: transfer_type
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  - name: silver_trips
+    columns:
+      - name: route_id
+        data_tests:
+          - not_null
+      - name: service_id
+        data_tests:
+          - not_null
+      - name: trip_id
+        data_tests:
+          - not_null
+      - name: trip_headsign
+        data_tests:
+          - not_null
+      - name: direction_id
+        data_tests:
+          - not_null
+      - name: shape_id
+        data_tests:
+          - not_null
+      - name: feed_version
+        data_tests:
+          - not_null
+      - name: ingested_at
+        data_tests:
+          - not_null
+  
