@@ -58,6 +58,9 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: route_type
+        data_tests:
+          - not_null
       - name: agency_id
         data_tests:
           - not_null
@@ -89,6 +92,9 @@ models:
       - name: trip_id
         data_tests:
           - not_null
+          - relationships:
+              to: ref('silver_trips')
+              field: trip_id
       - name: arrival_time
         data_tests:
           - not_null
@@ -98,6 +104,9 @@ models:
       - name: stop_id
         data_tests:
           - not_null
+          - relationships:
+              to: ref('silver_stops')
+              field: stop_id
       - name: feed_version
         data_tests:
           - not_null
@@ -147,12 +156,19 @@ models:
       - name: route_id
         data_tests:
           - not_null
+          - relationships:
+              to: ref('silver_routes')
+              field: route_id
       - name: service_id
         data_tests:
           - not_null
+          - relationships:
+              to: ref('silver_calendar')
+              field: service_id
       - name: trip_id
         data_tests:
           - not_null
+          - unique
       - name: trip_headsign
         data_tests:
           - not_null
