@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: gtfs_route_types
+    description: Lookup table for GTFS basic and extended route type codes.
+    columns:
+      - name: route_type
+        data_tests:
+          - not_null
+          - unique
+      - name: description
+        data_tests:
+          - not_null

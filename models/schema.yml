@@ -184,4 +184,3 @@ models:
       - name: ingested_at
         data_tests:
           - not_null
-  
