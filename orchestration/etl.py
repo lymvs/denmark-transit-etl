@@ -1,10 +1,12 @@
 """ETL flow."""
 import os
+from pathlib import Path
 
 import psycopg
 from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.logging import get_run_logger
+from prefect_dbt import DbtCoreOperation
 from psycopg import ProgrammingError
 
 from infra.gtfs.rejseplannen import fetch_files
@@ -25,6 +27,14 @@ CONFIG = {
     "port": "5432",
 }
 TEMP_PATH = "temp/"
+DBT_PROJECT_DIR = Path(__file__).resolve().parent
+
+
+def run_dbt(command: str) -> None:
+    dbt_op = DbtCoreOperation(
+        commands=[command],
+        )
+    dbt_op.run()
 
 
 @task(
@@ -39,7 +49,12 @@ def download_files() -> str:
     return fetch_files(logger, TEMP_PATH)
 
 
-@task(name="Bronze layer")
+@task(
+    name="Bronze layer",
+    retries=3,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+    )
 def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
     """Append data into bronze layer with feed_version."""
     logger = get_run_logger()
@@ -78,6 +93,37 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
         except ProgrammingError:
             conn.rollback()
             logger.exception("Ingestion failed, transaction rolled back")
+            raise
+
+
+@task(
+    name="Seed Route Types",
+    retries=3,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+    )
+def seed_route_types() -> None:
+    run_dbt("dbt seed")
+
+
+@task(
+    name="Silver Layer",
+    retries=3,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+    )
+def silver_layer() -> None:
+    run_dbt("dbt build --select silver")
+
+
+@task(
+    name="Gold Layer",
+    retries=3,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+    )
+def gold_layer() -> None:
+    run_dbt("dbt build --select gold")
 
 
 @flow(name="gtfs_etl", log_prints=True)
@@ -86,7 +132,14 @@ def etl() -> None:
     # Download and extract files from rejseplanen to temp folder
     hex_dig = download_files()
     # Trigger medallion architecture flow
+    # bronze layer
     ingest_data(hex_dig)
+
+    seed_route_types()
+
+    silver_layer()
+
+    gold_layer()
 
 
 if __name__ == "__main__":
