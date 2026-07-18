@@ -1,0 +1,8 @@
+psycopg[binary]
+python-dotenv==1.2.2
+prefect==3.7.6
+prefect-dbt==0.7.25
+alembic==1.18.4
+pandas
+dbt-core==1.10.22
+dbt-postgres==1.10.0

@@ -1,6 +1,5 @@
 """ETL flow."""
 import os
-from pathlib import Path
 
 import psycopg
 from dotenv import load_dotenv
@@ -23,11 +22,10 @@ CONFIG = {
     "dbname": os.getenv("POSTGRES_DB"),
     "user": os.getenv("POSTGRES_USER"),
     "password": os.getenv("POSTGRES_PASSWORD"),
-    "host": "127.0.0.1",
-    "port": "5432",
+    "host": os.getenv("POSTGRES_HOST"),
+    "port": os.getenv("POSTGRES_PORT"),
 }
 TEMP_PATH = "temp/"
-DBT_PROJECT_DIR = Path(__file__).resolve().parent
 
 
 def run_dbt(command: str) -> None:
@@ -143,4 +141,4 @@ def etl() -> None:
 
 
 if __name__ == "__main__":
-    etl.serve(name="test-etl")
+    etl()

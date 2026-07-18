@@ -1,21 +1,38 @@
 services:
   postgres:
-    image: postgis/postgis:18-3.6
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    image: postgres:17
+    env_file: .env
     ports:
       - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
   
-  adminer:
-    image: adminer
-    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
     ports:
-      - 8080:8080
+      - 8501:8501
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  etl:
+    build:
+      context: .
+      dockerfile: Dockerfile.etl
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    env_file: .env
 
 volumes:
   postgres_data:
-    
