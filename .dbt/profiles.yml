@@ -1,0 +1,12 @@
+gtfs_project:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      port: 5432
+      database: "{{ env_var('POSTGRES_DB') }}"
+      schema: public
+      threads: 4
+      host: "{{ env_var('POSTGRES_HOST') }}"
+      user: "{{ env_var('POSTGRES_USER') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD') }}"
