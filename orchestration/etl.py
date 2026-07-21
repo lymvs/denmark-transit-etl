@@ -2,12 +2,14 @@
 import os
 
 import psycopg
+from alembic.config import Config
 from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.logging import get_run_logger
 from prefect_dbt import DbtCoreOperation
 from psycopg import ProgrammingError
 
+from alembic import command
 from infra.gtfs.rejseplannen import fetch_files
 from pipelines.ingestion.ingest import (
     get_table_column_names,
@@ -36,6 +38,17 @@ def run_dbt(command: str) -> None:
 
 
 @task(
+    name="Run migrations",
+    retries=1,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+)
+def run_migrations() -> None:
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
+
+@task(
     name="Extract GTFS files",
     retries=3,
     retry_delay_seconds=[2, 5, 15],
@@ -58,6 +71,10 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
     logger = get_run_logger()
     with psycopg.connect(**CONFIG) as conn, conn.cursor() as cur:
         tables = get_table_names(cur, schema)
+        if not tables:
+            logger.exception("Schema migration failed. Exiting...")
+            raise
+
         try:
             for table in tables:
                 cur.execute(
@@ -127,8 +144,11 @@ def gold_layer() -> None:
 @flow(name="gtfs_etl", log_prints=True)
 def etl() -> None:
     """Run the end-to-end ETL for GTFS static data."""
+    run_migrations()
+
     # Download and extract files from rejseplanen to temp folder
     hex_dig = download_files()
+
     # Trigger medallion architecture flow
     # bronze layer
     ingest_data(hex_dig)
