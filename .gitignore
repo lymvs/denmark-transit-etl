@@ -53,3 +53,5 @@ Thumbs.db
 target/
 dbt_packages/
 logs/
+.dbt/oauth_sessions.json
+.dbt/.user.yml
