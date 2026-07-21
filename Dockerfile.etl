@@ -8,4 +8,6 @@ RUN pip install --no-cache-dir -r requirements.etl.txt
 
 COPY . .
 
+ENV DBT_PROFILES_DIR=/app/.dbt
+
 CMD ["python", "-m", "orchestration.etl"]
