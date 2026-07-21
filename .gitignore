@@ -18,7 +18,7 @@ env/
 # Environment variables
 .env
 .env.*
-!.env.example      # keep the example template
+!.env.example
 
 # Extracted GTFS files and downloads
 temp/
