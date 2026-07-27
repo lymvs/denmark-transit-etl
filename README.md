@@ -1,6 +1,7 @@
 # denmark-transit-etl
 
 ![ruff](https://github.com/lymvs/denmark-transit-etl/actions/workflows/ruff.yml/badge.svg)
+![tests](https://github.com/lymvs/denmark-transit-etl/actions/workflows/run_tests.yml/badge.svg)
 
 An ETL pipeline for fetching and analyzing public transit data for Denmark from GTFS feeds.
 
@@ -97,7 +98,7 @@ docker compose build
 docker compose up
 ```
 
-> **_NOTE:_** app will be served on http://localhost:8501/
+> **_NOTE:_** app will be served on <http://localhost:8501/>
 
 ## Project structure
 

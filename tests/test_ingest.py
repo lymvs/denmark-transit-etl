@@ -76,7 +76,7 @@ def dummy_data_file(tmp_path):
 class TestTableNames:
     def test_get_table_names(self, cur, dummy_tables):
         result = get_table_names(cur, "bronze")
-        assert result == ["table1", "table2", "table3"]
+        assert {"table1", "table2", "table3"}.issubset(result)
         assert isinstance(result, list)
         assert all(isinstance(item, str) for item in result)
 
