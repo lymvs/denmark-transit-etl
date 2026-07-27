@@ -72,8 +72,8 @@ def ingest_data(hex_dig: str, schema: str = "bronze") -> None:
     with psycopg.connect(**CONFIG) as conn, conn.cursor() as cur:
         tables = get_table_names(cur, schema)
         if not tables:
-            logger.exception("Schema migration failed. Exiting...")
-            raise
+            logger.error("Schema migration failed. Exiting...")
+            raise RuntimeError(f"No tables found in schema '{schema}'")
 
         try:
             for table in tables:
