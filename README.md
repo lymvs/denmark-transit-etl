@@ -119,11 +119,16 @@ docker compose up
 
 ## Roadmap
 
-- [ ] Host the pipeline on [Prefect Cloud](https://www.prefect.io/prefect/cloud) for scheduled runs
-- [ ] Add more visualizations on the UI
+- [ ] Add more visualizations on the UI (e.g. map)
 - [ ] Add a cli for manual on demand triggering of the ETL pipeline
-- [ ] Database migration to [Snowflake](https://www.snowflake.com/en/) or [Databricks](https://www.databricks.com/)
+- [ ] Dbt docs
+- [ ] Test silver_routes.route_type
+- [ ] Mocked HTTP test for fetching data step
+- [ ] FastAPI for communication between Streamlit UI and Postgres db
 - [ ] Use live transit data using [Rejseplannen API](https://labs.rejseplanen.dk/hc/da/articles/21554723926557-Om-API-2-0)
+- [ ] Migrate fetching and ingestion steps from Python to Golang
+- [ ] Host the pipeline on [Prefect Cloud](https://www.prefect.io/prefect/cloud) for scheduled runs
+- [ ] Database migration to [Snowflake](https://www.snowflake.com/en/) or [Databricks](https://www.databricks.com/)
 
 ## License
 
