@@ -73,6 +73,43 @@ The project is following the [Medallion architecture](https://www.databricks.com
 - Hosts a simple UI locally by a [Streamlit](https://streamlit.io/) server
 - Orchestrates the whole pipeline with [Prefect](https://www.prefect.io/)
 
+## Design Decisions
+
+### Why dbt
+
+The primary motivation for using dbt was to gain hands-on experience with a modern transformation framework that is widely adopted in data engineering.
+
+Beyond the learning aspect, dbt naturally fits the architecture of this project:
+
+- It provides a clean separation between the Bronze, Silver, and Gold layers.
+- Built-in testing (not_null, unique, relationships, custom tests) makes data quality validation straightforward.
+- SQL transformations are version-controlled alongside the application code.
+- Incremental models and modular SQL improve maintainability as the project grows.
+- The generated documentation and lineage graph make it easier to understand dependencies between models.
+
+### Why Prefect over Airflow
+
+Although I have professional experience building production pipelines with Apache Airflow, I chose Prefect for this project because it better matches its current scale.
+
+The project consists of a relatively small number of tasks with simple dependencies, where introducing Airflow would have added unnecessary infrastructure and operational complexity.
+
+Prefect offers several advantages for this use case:
+
+- Lightweight setup with minimal configuration.
+- Pipelines can be written as standard Python code.
+- Built-in retries, logging, scheduling and monitoring.
+- Easy migration to a more robust orchestration platform if the project grows in complexity.
+
+If this project were expanded into a larger production system with multiple teams, hundreds of workflows, or more complex scheduling requirements, Apache Airflow would likely become the more appropriate choice.
+
+### Why Postgres over Databricks or Snowflake
+
+PostgreSQL was chosen because it is lightweight, open-source, and easy to run locally, making it well suited for developing and testing the pipeline without requiring cloud infrastructure.
+
+The project separates data ingestion, transformation, orchestration, and presentation into independent components. This modular architecture allows the storage layer to be replaced by cloud-native platforms such as Snowflake or Databricks with limited changes to the overall pipeline design.
+
+One of the planned future improvements is to migrate the storage and transformation layers to either Snowflake or Databricks.
+
 ## Screenshots
 
 ![Dashboard](screenshots/screenshot_1.png)
