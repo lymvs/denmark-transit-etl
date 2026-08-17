@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:17
+    env_file: .env
+    ports:
+      - "127.0.0.1:5432:5432" # only reachable from the server itself (e.g. via SSH tunnel), never from the internet
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    restart: unless-stopped
+
+  app:
+    image: ghcr.io/lymvs/denmark-transit-etl-app:latest
+    ports:
+      - "8501:8501"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  etl:
+    image: ghcr.io/lymvs/denmark-transit-etl-etl:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    # Deliberately NOT started by `docker compose up -d` (see deploy.yml, which only
+    # brings up postgres + app). Trigger a run on demand with:
+    #   docker compose -f compose.prod.yaml run --rm etl
+    # and schedule repeated runs later via cron/systemd timer or a Prefect deployment.
+
+volumes:
+  postgres_data:
