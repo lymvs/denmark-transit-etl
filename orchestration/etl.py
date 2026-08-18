@@ -128,7 +128,7 @@ def seed_route_types() -> None:
     log_prints=True,
     )
 def silver_layer() -> None:
-    run_dbt("dbt build --select silver")
+    run_dbt("dbt build --select silver --write-catalog")
 
 
 @task(
@@ -138,7 +138,7 @@ def silver_layer() -> None:
     log_prints=True,
     )
 def gold_layer() -> None:
-    run_dbt("dbt build --select gold")
+    run_dbt("dbt build --select gold --write-catalog")
 
 
 @flow(name="gtfs_etl", log_prints=True)
