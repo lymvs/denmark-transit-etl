@@ -128,7 +128,7 @@ def seed_route_types() -> None:
     log_prints=True,
     )
 def silver_layer() -> None:
-    run_dbt("dbt build --select silver --write-catalog")
+    run_dbt("dbt build --select silver")
 
 
 @task(
@@ -138,7 +138,17 @@ def silver_layer() -> None:
     log_prints=True,
     )
 def gold_layer() -> None:
-    run_dbt("dbt build --select gold --write-catalog")
+    run_dbt("dbt build --select gold")
+
+
+@task(
+    name="Generate Docs",
+    retries=3,
+    retry_delay_seconds=[2, 5, 15],
+    log_prints=True,
+    )
+def generate_docs() -> None:
+    run_dbt("dbt docs generate")
 
 
 @flow(name="gtfs_etl", log_prints=True)
@@ -158,6 +168,8 @@ def etl() -> None:
     silver_layer()
 
     gold_layer()
+
+    generate_docs()
 
 
 if __name__ == "__main__":
