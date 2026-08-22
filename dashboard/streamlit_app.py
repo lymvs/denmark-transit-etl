@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import streamlit as st
 from sqlalchemy import Engine, create_engine
+from sqlalchemy.exc import SQLAlchemyError
 
 
 def _db_engine() -> Engine:
@@ -15,35 +16,44 @@ def _db_engine() -> Engine:
 
 
 def _query_top_10_stations(engine: Engine) -> pd.DataFrame:
-    return pd.read_sql(
-        """
-        SELECT stop_name, departures
-        FROM public_gold.gold_top_stops_by_departures
-        LIMIT 10;
-        """,
-        engine,
-    )
+    try:
+        return pd.read_sql(
+            """
+            SELECT stop_name, departures
+            FROM public_gold.gold_top_stops_by_departures
+            LIMIT 10;
+            """,
+            engine,
+        )
+    except SQLAlchemyError:
+        return pd.DataFrame(columns=["stop_name", "departures"])
 
 
 def _query_top_10_routes(engine: Engine) -> pd.DataFrame:
-    return pd.read_sql(
-        """
-        SELECT route_name, trips, agency_name
-        FROM public_gold.gold_trip_counts_by_route
-        LIMIT 10;
-        """,
-        engine,
-    )
+    try:
+        return pd.read_sql(
+            """
+            SELECT route_name, trips, agency_name
+            FROM public_gold.gold_trip_counts_by_route
+            LIMIT 10;
+            """,
+            engine,
+        )
+    except SQLAlchemyError:
+        return pd.DataFrame(columns=["route_name", "trips", "agency_name"])
 
 
 def _query_routes_per_route_type(engine: Engine) -> pd.DataFrame:
-    return pd.read_sql(
-        """
-        SELECT description, routes
-        FROM public_gold.gold_routes_per_route_type;
-        """,
-        engine,
-    )
+    try:
+        return pd.read_sql(
+            """
+            SELECT description, routes
+            FROM public_gold.gold_routes_per_route_type;
+            """,
+            engine,
+        )
+    except SQLAlchemyError:
+        return pd.DataFrame(columns=["description", "routes"])
 
 
 def render_top_10_stations(engine: Engine) -> None:
@@ -114,15 +124,11 @@ def render_routes_per_route_type(engine: Engine) -> None:
 
 def main():
     st.title("Denmark Transit Dashboard")
-
     engine = _db_engine()
 
     render_top_10_stations(engine)
-
     render_top_10_routes(engine)
-
     render_routes_per_route_type(engine)
-
 
 if __name__ == "__main__":
     main()

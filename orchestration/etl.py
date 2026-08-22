@@ -6,7 +6,7 @@ from alembic.config import Config
 from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.logging import get_run_logger
-from prefect_dbt import DbtCoreOperation
+from prefect_dbt.core import DbtCoreOperation
 from psycopg import ProgrammingError
 
 from alembic import command
@@ -30,11 +30,11 @@ CONFIG = {
 TEMP_PATH = "temp/"
 
 
-def run_dbt(command: str) -> None:
-    dbt_op = DbtCoreOperation(
-        commands=[command],
-        )
-    dbt_op.run()
+def run_dbt(cmd: str) -> None:
+    DbtCoreOperation(
+        commands=[cmd],
+        stream_output=True,
+        ).run()
 
 
 @task(
