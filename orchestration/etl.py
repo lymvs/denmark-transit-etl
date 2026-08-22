@@ -30,8 +30,11 @@ CONFIG = {
 TEMP_PATH = "temp/"
 
 
-def run_dbt(command: str) -> None:
-    DbtCoreOperation(commands=[command]).run()
+def run_dbt(cmd: str) -> None:
+    DbtCoreOperation(
+        commands=[cmd],
+        stream_output=True,
+        ).run()
 
 
 @task(
