@@ -6,7 +6,7 @@ from alembic.config import Config
 from dotenv import load_dotenv
 from prefect import flow, task
 from prefect.logging import get_run_logger
-from prefect_dbt.core import DbtCoreOperation
+from prefect_dbt import DbtCoreOperation
 from psycopg import ProgrammingError
 
 from alembic import command
